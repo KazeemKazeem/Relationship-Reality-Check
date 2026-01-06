@@ -1,15 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Layout from './components/Layout';
-import LandingView from './views/LandingView';
-import AuthView from './views/AuthView';
-import SetupView from './views/SetupView';
-import EvaluationView from './views/EvaluationView';
-import ResultsView from './views/ResultsView';
-import DashboardView from './views/DashboardView';
-import { UserProfile, EvaluationResult, RelationshipCategory, RelationshipMetadata } from './types';
-import { supabase } from './lib/supabase';
+import Layout from './components/Layout.tsx';
+import LandingView from './views/LandingView.tsx';
+import AuthView from './views/AuthView.tsx';
+import SetupView from './views/SetupView.tsx';
+import EvaluationView from './views/EvaluationView.tsx';
+import ResultsView from './views/ResultsView.tsx';
+import DashboardView from './views/DashboardView.tsx';
+import { UserProfile, EvaluationResult, RelationshipCategory, RelationshipMetadata } from './types.ts';
+import { supabase } from './lib/supabase.ts';
 
 const AppContent: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);

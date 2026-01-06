@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { RelationshipCategory, EvaluationResult, EvaluationResponse, AnswerScale } from '../types';
-import { QUESTIONS, WEIGHTS } from '../constants';
+import { RelationshipCategory, EvaluationResult, EvaluationResponse, AnswerScale } from '../types.ts';
+import { QUESTIONS, WEIGHTS } from '../constants.ts';
 import { CheckCircle2, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
 
 interface EvaluationViewProps {

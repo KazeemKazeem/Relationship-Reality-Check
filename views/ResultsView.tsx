@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { EvaluationResult } from '../types';
-import { SCORE_LABELS } from '../constants';
+import { EvaluationResult } from '../types.ts';
+import { SCORE_LABELS } from '../constants.ts';
 import { RefreshCw, Info, Sparkles, LayoutDashboard, UserPlus } from 'lucide-react';
-import { generateNeutralAdvice } from '../services/geminiService';
+import { generateNeutralAdvice } from '../services/geminiService.ts';
 import { Link } from 'react-router-dom';
 
 interface ResultsViewProps {
