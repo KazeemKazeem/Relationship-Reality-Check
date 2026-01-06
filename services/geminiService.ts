@@ -3,7 +3,14 @@ import { GoogleGenAI } from "@google/genai";
 import { EvaluationResult } from "../types.ts";
 
 export const generateNeutralAdvice = async (result: EvaluationResult): Promise<string> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // Check if API key exists to avoid initialization errors
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.warn("Gemini API key is missing. Using fallback advice.");
+    return "Focus on areas with lower scores and consider open dialogue as a first step toward understanding. Each connection is unique and requires ongoing patience and effort.";
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
   
   const categoryBreakdownText = result.categoryBreakdown
     .map(c => `${c.name}: ${c.score}%`)
@@ -19,34 +26,36 @@ export const generateNeutralAdvice = async (result: EvaluationResult): Promise<s
   }
 
   const promptText = `
-    Context: A user just completed a relationship evaluation for a ${result.relationshipCategory} relationship labeled "${result.relationshipLabel}".
-    ${contextStrings.length > 0 ? `Relationship Details: ${contextStrings.join(', ')}` : ''}
-    Total Score: ${result.totalScore}%
-    Breakdown: ${categoryBreakdownText}
+    Relationship Context: ${result.relationshipCategory} connection labeled "${result.relationshipLabel}".
+    ${contextStrings.length > 0 ? `Specific Details: ${contextStrings.join(', ')}` : ''}
+    Evaluation Summary:
+    - Total Score: ${result.totalScore}%
+    - Detailed Breakdown: ${categoryBreakdownText}
     
-    Task: Provide 3 short, neutral, and reflective bullet points of advice based on these scores and the relationship context. 
+    Task: Provide exactly 3 short, neutral, and reflective bullet points of advice. 
     Guidelines: 
-    - Be supportive but neutral.
-    - Do not make psychological claims or diagnoses.
+    - Be supportive but objective.
+    - Avoid psychological labels or definitive diagnoses.
     - Focus on communication, boundaries, and mutual respect.
-    - Consider the duration and living situation if provided (e.g., long-term vs new connection).
-    - Keep it under 150 words.
-    - Return ONLY the bullet points.
+    - Tailor advice to the relationship duration and closeness level if provided.
+    - Total word count should be under 120 words.
+    - Return ONLY the bullet points, no introductory text.
   `;
 
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: [{ parts: [{ text: promptText }] }],
+      contents: promptText,
     });
     
-    if (response && response.text) {
-      return response.text.trim();
+    const output = response.text;
+    if (output && output.trim().length > 0) {
+      return output.trim();
     }
     
-    return "Continue focusing on open communication and mutual respect.";
+    throw new Error("Empty response from AI model");
   } catch (error) {
     console.error("Error generating advice:", error);
-    return "Reflect on areas with lower scores and consider open dialogue as a first step toward understanding. Each connection is unique and requires ongoing patience and effort.";
+    return "• Reflect on areas with lower scores to identify patterns in communication.\n• Consider if boundaries are being mutually respected and adjusted as the relationship evolves.\n• Open, honest dialogue remains the most effective tool for deepening understanding and trust.";
   }
 };
