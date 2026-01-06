@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { EvaluationResult } from '../types';
+import { EvaluationResult } from '../types.ts';
 import { Trash2, Plus, Calendar, Heart, Users, Home, Loader2, Clock } from 'lucide-react';
 
 interface DashboardViewProps {

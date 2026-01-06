@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Mail, Lock, LogIn, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.ts';
 import { useNavigate } from 'react-router-dom';
 
 const AuthView: React.FC = () => {

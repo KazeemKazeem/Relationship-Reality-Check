@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { RelationshipCategory, RelationshipMetadata } from '../types';
+import { RelationshipCategory, RelationshipMetadata } from '../types.ts';
 import { Heart, Users, Home, ChevronRight, Info } from 'lucide-react';
 
 interface SetupViewProps {

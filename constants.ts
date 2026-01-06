@@ -1,5 +1,5 @@
 
-import { RelationshipCategory, Question } from './types';
+import { RelationshipCategory, Question } from './types.ts';
 
 export const WEIGHTS = {
   [RelationshipCategory.ROMANTIC]: {

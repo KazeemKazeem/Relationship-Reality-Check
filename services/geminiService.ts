@@ -1,6 +1,6 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { EvaluationResult } from "../types";
+import { EvaluationResult } from "../types.ts";
 
 export const generateNeutralAdvice = async (result: EvaluationResult): Promise<string> => {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -18,7 +18,7 @@ export const generateNeutralAdvice = async (result: EvaluationResult): Promise<s
     contextStrings.push(`Living Situation: ${meta.livingSituation}`);
   }
 
-  const prompt = `
+  const promptText = `
     Context: A user just completed a relationship evaluation for a ${result.relationshipCategory} relationship labeled "${result.relationshipLabel}".
     ${contextStrings.length > 0 ? `Relationship Details: ${contextStrings.join(', ')}` : ''}
     Total Score: ${result.totalScore}%
@@ -37,11 +37,16 @@ export const generateNeutralAdvice = async (result: EvaluationResult): Promise<s
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: prompt,
+      contents: [{ parts: [{ text: promptText }] }],
     });
-    return response.text || "Continue focusing on open communication and mutual respect.";
+    
+    if (response && response.text) {
+      return response.text.trim();
+    }
+    
+    return "Continue focusing on open communication and mutual respect.";
   } catch (error) {
     console.error("Error generating advice:", error);
-    return "Reflect on areas with lower scores and consider open dialogue as a first step toward understanding.";
+    return "Reflect on areas with lower scores and consider open dialogue as a first step toward understanding. Each connection is unique and requires ongoing patience and effort.";
   }
 };

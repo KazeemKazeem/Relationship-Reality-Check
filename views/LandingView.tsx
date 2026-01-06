@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ArrowRight, ShieldCheck, Heart, Users, LayoutDashboard, Sparkles } from 'lucide-react';
-import { UserProfile } from '../types';
+import { UserProfile } from '../types.ts';
 import { Link } from 'react-router-dom';
 
 interface LandingViewProps {
